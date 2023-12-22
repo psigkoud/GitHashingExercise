@@ -1,0 +1,171 @@
+----------------example_sleep:----------------
+
+Summary:
+
+The C program, named example_sleep, showcases signal handling using the signal function from the signal.h library. The main function establishes a signal handler, sighandler, to manage the Ctrl+C signal (SIGINT). Within an infinite loop, the program prints a message and sleeps for one second in each iteration. If the user triggers Ctrl+C, the signal handler activates, displaying a message indicating the caught signal and gracefully terminating the program with an exit status of 1.
+
+Example usage and output:
+
+Compile the program using a C compiler, e.g., gcc example_sleep.c -o example_sleep. Execute the compiled program:
+
+bash
+
+./example_sleep
+
+Output:
+
+css
+
+Going to sleep for a second...
+Going to sleep for a second...
+Going to sleep for a second...
+^CCaught signal 2, coming out...
+
+In this example, the program is interrupted by pressing Ctrl+C, leading to the triggering of the SIGINT signal. The signal handler responds by printing the corresponding message and concluding the program with an exit status of 1.
+
+----------------example_pause:----------------
+
+Summary:
+
+The C program, named example_pause, employs signal handling and timing functions to implement an alarm system. The catcher function serves as a signal handler, printing a message upon signal reception, while the timestamp function displays the current time. In the main function, the SIGALRM signal handler is set up, and an alarm is scheduled based on the time specified by the command-line argument (converted to an integer). Before entering a pause state, the program prints a timestamp, then waits for the alarm signal. Upon receiving the SIGALRM signal, the program exits the pause, prints another timestamp, and concludes.
+
+Example usage and output:
+
+Compile the program using a C compiler, such as gcc example_pause.c -o example_pause. Run the executable with a time argument:
+
+bash
+
+./example_pause 5
+
+Output:
+
+sql
+
+The time before pause is [current time]
+Signal catcher called for signal 14
+The time after pause is [current time]
+
+In this example, the program sets an alarm for 5 seconds. It prints the timestamp before entering the pause state, catches the SIGALRM signal after the specified time, prints another timestamp, and then exits.
+
+----------------example_kill:----------------
+
+Summary:
+
+The C program, named example_kill, demonstrates the use of the kill function to send the SIGUSR1 signal to the current process multiple times. The program includes a signal-catching function, catcher, to count the number of times the SIGUSR1 signal is received. The sendsig function generates the signals by calling the kill function in a loop. The main function sets up the signal handler for SIGUSR1, calls sendsig to send the signals, and then prints the result.
+
+Example usage and output:
+
+Compile the program using a C compiler, for example, gcc example_kill.c -o example_kill. Run the executable with an iteration count:
+
+bash
+
+./example_kill 20
+
+Output:
+
+bash
+
+Back in main
+The kill() function was called 2 times
+The signal catching function was called 2 times
+
+In this example, the program sends the SIGUSR1 signal 20 times but the signal-catching function is called only twice, as it is designed to handle the signal every 10th iteration. The program prints the total number of times the kill function was called and the number of times the signal-catching function was invoked.
+
+----------------immun2ctrlC:----------------
+
+Summary:
+
+The C program, named immun2ctrlC, utilizes signal handling to ignore the Ctrl+C signal (SIGINT). The main function takes a time argument from the command line, sets up a signal handler to ignore SIGINT, prints a message indicating the sleep duration, and then sleeps for the specified time.
+
+Example usage and output:
+
+Compile the program using a C compiler, for example, gcc immun2ctrlC.c -o immun2ctrlC. Run the executable with a time argument:
+
+bash
+
+./immun2ctrlC 5
+
+Output:
+
+yaml
+
+sleeping for: 5 sec
+
+In this example, the program ignores the Ctrl+C signal, making it immune to interruptions during the sleep period. The output simply indicates the sleep duration. The program will terminate after the specified sleep time without responding to Ctrl+C.
+
+----------------signal:----------------
+
+Summary:
+
+The C program utilizes signal handling and process management to execute a command with a specified time limit. The main function takes command-line arguments, including an optional time limit specified with '-', forks a child process, and executes the given command. The parent process sets up a signal handler for SIGALRM, triggering an alarm after the specified time limit. If the child process completes within the time limit, the parent waits for it to finish; otherwise, it sends a SIGKILL signal to terminate the child process.
+
+Example usage:
+
+Compile the program using a C compiler, for example, gcc signal.c -o signal_example. Run the executable with a command and an optional time limit:
+
+bash
+
+./signal_example -10 sleep 5
+
+Output:
+
+yaml
+
+Executing: sleep
+Alarm received: 14
+Child process killed
+
+In this example, the program executes the "sleep 5" command with a time limit of 10 seconds. The SIGALRM signal is triggered after 10 seconds, and the child process is terminated with a SIGKILL signal. The output indicates the executed command and the termination message.
+
+----------------pipe_1:----------------
+
+Summary:
+
+The C program, named pipe_1, demonstrates the creation of multiple child processes that communicate with a parent process using a pipe. Each child process writes a message to the pipe, and the parent process reads and prints the messages received from the children.
+
+The child function is responsible for writing a message to the pipe, and the main function creates N child processes using fork(). The parent process closes the writing end of the pipe and reads messages from the pipe, printing them to the standard output.
+
+Example usage:
+
+Compile the program using a C compiler, for example, gcc pipe_1.c -o pipe_1. Run the executable with the number of children:
+
+bash
+
+./pipe_1 3
+
+Output:
+
+vbnet
+
+Creating 3 children
+FATHER: I received from children:
+
+Ηello from child  1 (pid=XXXXX)
+Ηello from child  2 (pid=XXXXX)
+Ηello from child  3 (pid=XXXXX)
+
+In this example, the program creates 3 child processes, and each child writes a message to the pipe. The parent process reads these messages and prints them to the standard output. The output includes the messages generated by each child process.
+
+----------------pipe_2:----------------
+
+Summary:
+
+The C program, named pipe_2, demonstrates interprocess communication using a pipe between a parent and a child process. The parent process writes a message to the pipe, and the child process reads the message from the pipe and writes it to the standard output.
+
+The program creates a pipe using the pipe system call and forks a child process. The parent process writes a message to the pipe using the write system call, and the child process reads the message from the pipe using the read system call. The child then writes the message to the standard output.
+
+Example usage:
+
+Compile the program using a C compiler, for example, gcc pipe_2.c -o pipe_2. Run the executable:
+
+bash
+
+./pipe_2
+
+Output:
+
+perl
+
+message through pipe
+
+In this example, the parent process writes the message "message through pipe" to the pipe, and the child process reads the message from the pipe and writes it to the standard output. The output reflects the message sent through the pipe.
